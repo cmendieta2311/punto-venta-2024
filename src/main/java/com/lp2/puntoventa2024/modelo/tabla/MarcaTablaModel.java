@@ -14,7 +14,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class MarcaTablaModel extends AbstractTableModel{
     List<Marca> lista;
-    private String[] columnas ={"NOMBRE"};
+    private String[] columnas ={"ID","NOMBRE"};
     
     public void setLista(List<Marca> lista){
         // Inicializamos las lista de marcas
@@ -38,9 +38,9 @@ public class MarcaTablaModel extends AbstractTableModel{
         Marca marca = lista.get(fila);
         switch (columna) {
             case 0:
+                return marca.getId();
+            case 1:
                 return marca.getNombre();
-//            case 1:
-//                return marca.getNombre();
             default:
                 return null;
         }
@@ -49,6 +49,10 @@ public class MarcaTablaModel extends AbstractTableModel{
     @Override
     public String getColumnName(int column) {
         return columnas[column]; 
+    }
+    
+    public Marca getMarcaByRow(int index){
+        return lista.get(index);
     }
     
     

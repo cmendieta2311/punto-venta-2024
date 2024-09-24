@@ -68,7 +68,10 @@ public class GUIMarca extends javax.swing.JDialog {
             }
         });
 
+        btn_guardar.setMnemonic('G');
         btn_guardar.setText("Guardar");
+
+        txt_nombre.setDisabledTextColor(new java.awt.Color(0, 0, 0));
 
         jLabel2.setText("Nombre");
 
@@ -103,6 +106,7 @@ public class GUIMarca extends javax.swing.JDialog {
 
         jToolBar1.setRollover(true);
 
+        btn_nuevo.setMnemonic('N');
         btn_nuevo.setText("Nuevo");
         btn_nuevo.setBorderPainted(false);
         btn_nuevo.setFocusable(false);
@@ -115,12 +119,14 @@ public class GUIMarca extends javax.swing.JDialog {
         });
         jToolBar1.add(btn_nuevo);
 
+        btn_editar.setMnemonic('E');
         btn_editar.setText("Editar");
         btn_editar.setFocusable(false);
         btn_editar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btn_editar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar1.add(btn_editar);
 
+        btn_eliminar.setMnemonic('r');
         btn_eliminar.setText("Eliminar");
         btn_eliminar.setFocusable(false);
         btn_eliminar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -214,11 +220,11 @@ public class GUIMarca extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_cancelar;
-    private javax.swing.JButton btn_editar;
-    private javax.swing.JButton btn_eliminar;
-    private javax.swing.JButton btn_guardar;
-    private javax.swing.JButton btn_nuevo;
+    public javax.swing.JButton btn_cancelar;
+    public javax.swing.JButton btn_editar;
+    public javax.swing.JButton btn_eliminar;
+    public javax.swing.JButton btn_guardar;
+    public javax.swing.JButton btn_nuevo;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
@@ -226,6 +232,6 @@ public class GUIMarca extends javax.swing.JDialog {
     private javax.swing.JToolBar jToolBar1;
     public javax.swing.JTable tabla;
     private javax.swing.JTextField txt_buscar;
-    private javax.swing.JTextField txt_nombre;
+    public javax.swing.JTextField txt_nombre;
     // End of variables declaration//GEN-END:variables
 }

@@ -80,7 +80,7 @@ public class MarcaCrudImpl implements crud<Marca>{
     public List<Marca> listar() {
         ArrayList<Marca> lista = new ArrayList<>();
         try {
-            String sql="select * from marca";
+            String sql="select * from marca order by nombre asc";
             sentencia = conec.prepareStatement(sql);
             ResultSet rs = sentencia.executeQuery();
             
