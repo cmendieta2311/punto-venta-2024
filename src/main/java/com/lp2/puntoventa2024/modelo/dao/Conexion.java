@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class Conexion {
 
-    String url = "jdbc:postgresql://localhost:5432/bdlp2";
+    String url = "jdbc:postgresql://localhost:5432/fcyt_db";
     String usuario = "postgres";
     String password = "12345";
 

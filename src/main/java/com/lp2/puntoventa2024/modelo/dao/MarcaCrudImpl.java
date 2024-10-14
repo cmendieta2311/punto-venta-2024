@@ -77,11 +77,13 @@ public class MarcaCrudImpl implements crud<Marca>{
     }    
 
     @Override
-    public List<Marca> listar() {
+    public List<Marca> listar(String textoBuscado) {
+        System.out.println("texto buscado "+ textoBuscado);
         ArrayList<Marca> lista = new ArrayList<>();
         try {
-            String sql="select * from marca order by nombre asc";
+            String sql="select * from marca where nombre ilike ? order by nombre asc";
             sentencia = conec.prepareStatement(sql);
+            sentencia.setString(1, "%" +textoBuscado+"%");
             ResultSet rs = sentencia.executeQuery();
             
             //recorrer una lista
