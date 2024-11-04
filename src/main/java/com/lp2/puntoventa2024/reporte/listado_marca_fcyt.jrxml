@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.1.final using JasperReports Library version 6.20.1-7584acb244139816654f64e2fd57a00d3e31921e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="listado_marca_fcyt" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="44d37bd8-0780-4059-b4fe-612a9d49547c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="FCyT_LPII"/>
+	<parameter name="empresa" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select * from marca;]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="marca"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="marca"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="87" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="57" width="555" height="30" uuid="740ac233-ce70-4606-b32c-deb9d2c3beb4"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE MARCA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="18" y="6" width="100" height="30" uuid="5864dd5f-33ce-4cd1-80f0-0ecd731e71e2"/>
+				<textFieldExpression><![CDATA[$P{empresa}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="20" uuid="19949f57-6c45-47a2-b70e-12b99f9a1030"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="6" y="0" width="100" height="20" uuid="bc411c52-e5ac-48b7-826b-ee0c0d718c2c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ff4f38e6-0ce6-4917-a8f7-4a5dbfcfaea8"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[N°:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="73" y="0" width="100" height="20" uuid="7b90a058-7562-4b10-b591-c729d193079c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ff4f38e6-0ce6-4917-a8f7-4a5dbfcfaea8"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Marca]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="6" y="1" width="67" height="19" uuid="ef926f49-8e63-4fa3-b425-6b65a82adc84">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ff4f38e6-0ce6-4917-a8f7-4a5dbfcfaea8"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="22" width="555" height="1" uuid="608e09bf-17ed-4d0d-a2f6-ec2bdac33452"/>
+			</line>
+			<textField>
+				<reportElement x="73" y="1" width="150" height="19" uuid="8a2162bc-2b3c-4af3-ae9a-0b3b3dd11eff">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ff4f38e6-0ce6-4917-a8f7-4a5dbfcfaea8"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField pattern="M/d/yy h:mm a">
+				<reportElement x="450" y="2" width="100" height="20" uuid="2d699f80-6e11-44a9-bfbb-c293a15ca1cd"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="320" y="2" width="130" height="20" uuid="0590eabb-5e12-4634-8bec-80ddf60c94bc"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Fecha de impresión:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="1" width="555" height="1" uuid="87bfc8bd-8bb8-4a88-90ed-d9ce6321b67b"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="56" splitType="Stretch"/>
+	</summary>
+</jasperReport>
