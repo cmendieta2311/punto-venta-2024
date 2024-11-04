@@ -9,9 +9,21 @@ import com.lp2.puntoventa2024.controlador.IvaController;
 import com.lp2.puntoventa2024.controlador.MarcaController;
 import com.lp2.puntoventa2024.controlador.ProductoController;
 import com.lp2.puntoventa2024.modelo.dao.ClienteCrudImpl;
+import com.lp2.puntoventa2024.modelo.dao.Conexion;
 import com.lp2.puntoventa2024.modelo.dao.IvaCrudImpl;
 import com.lp2.puntoventa2024.modelo.dao.MarcaCrudImpl;
 import com.lp2.puntoventa2024.modelo.dao.ProductoCrudImpl;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -19,11 +31,15 @@ import com.lp2.puntoventa2024.modelo.dao.ProductoCrudImpl;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
+    Connection conec;
+
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
+        Conexion conectar = new Conexion();
+        conec = conectar.conectarBD();
     }
 
     /**
@@ -54,6 +70,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
+        jMenuItem9 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -140,6 +157,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu4);
 
         jMenu5.setText("Reportes");
+
+        jMenuItem9.setText("listado de marcas");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        jMenu5.add(jMenuItem9);
+
         jMenuBar1.add(jMenu5);
 
         setJMenuBar(jMenuBar1);
@@ -191,6 +217,20 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ProductoController ctrl = new ProductoController(producto, crud);
         ctrl.mostrarVentana();
     }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        // TODO add your handling code here:
+        try {
+            Map parameters = new HashMap();
+            parameters.put("empresa","nombre de mi EMPRESA S.A");
+            JasperReport report = JasperCompileManager.compileReport(
+                    "/home/cmendieta/FCyT/Lenguaje de Programacion II/2024/puntoventa2024/src/main/java/com/lp2/puntoventa2024/reporte/listado_marca_fcyt.jrxml");
+            JasperPrint print = JasperFillManager.fillReport(report, parameters, conec);
+            JasperViewer.viewReport(print, false);
+        } catch (JRException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -244,6 +284,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar jToolBar1;
