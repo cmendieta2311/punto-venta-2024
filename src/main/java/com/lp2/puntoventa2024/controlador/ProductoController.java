@@ -4,10 +4,14 @@
  */
 package com.lp2.puntoventa2024.controlador;
 
+import com.lp2.puntoventa2024.modelo.Iva;
 import com.lp2.puntoventa2024.modelo.Marca;
+import com.lp2.puntoventa2024.modelo.Producto;
+import com.lp2.puntoventa2024.modelo.dao.IvaCrudImpl;
 import com.lp2.puntoventa2024.modelo.dao.MarcaCrudImpl;
-import com.lp2.puntoventa2024.modelo.tabla.MarcaTablaModel;
-import com.lp2.puntoventa2024.vista.GUIMarca;
+import com.lp2.puntoventa2024.modelo.dao.ProductoCrudImpl;
+import com.lp2.puntoventa2024.modelo.tabla.ProductoTablaModel;
+import com.lp2.puntoventa2024.vista.GUIProducto;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -15,6 +19,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -22,17 +28,20 @@ import javax.swing.JTable;
  *
  * @author cmendieta
  */
-public class MarcaController implements ActionListener , KeyListener {
+public class ProductoController implements ActionListener , KeyListener {
     
-    private GUIMarca gui;
-    private MarcaCrudImpl crud;
+    private GUIProducto gui;
+    private ProductoCrudImpl crud;
     
     private char operacion;
-    Marca marca = new Marca();
+    Producto producto = new Producto();
     
-    MarcaTablaModel modelo = new MarcaTablaModel();
+    MarcaCrudImpl crudMarca = new MarcaCrudImpl();
+    IvaCrudImpl crudIva = new IvaCrudImpl();
     
-    public MarcaController(GUIMarca gui, MarcaCrudImpl crud) {
+    ProductoTablaModel modelo = new ProductoTablaModel();
+    
+    public ProductoController(GUIProducto gui, ProductoCrudImpl crud) {
         this.gui = gui;
         this.crud = crud;
         this.gui.btn_guardar.addActionListener(this);
@@ -46,12 +55,15 @@ public class MarcaController implements ActionListener , KeyListener {
             public void mouseClicked(MouseEvent e) {
                 JTable tabla = (JTable) e.getSource();
                 int row = tabla.rowAtPoint(e.getPoint());
-                MarcaTablaModel model = (MarcaTablaModel) tabla.getModel();
+                ProductoTablaModel model = (ProductoTablaModel) tabla.getModel();
                 //Devolver el objeto seleccionado en la fila
 
-                setMarcaForm(model.getMarcaByRow(row));
+                setProductoForm(model.getProductoByRow(row));
             }
         });
+        
+        llenarComboMarca(gui.cbo_Marca);
+        llenarComboIva(gui.cbo_Iva);
         
         habilitarCampos(false);
         habilitarBoton(false);
@@ -65,7 +77,7 @@ public class MarcaController implements ActionListener , KeyListener {
     }
     
     public void listar(String valorBuscado) {
-        List<Marca> lista = crud.listar(valorBuscado);
+        List<Producto> lista = crud.listar(valorBuscado);
         modelo.setLista(lista);
         gui.tabla.setModel(modelo);
         gui.tabla.updateUI();
@@ -102,7 +114,7 @@ public class MarcaController implements ActionListener , KeyListener {
                         JOptionPane.YES_NO_OPTION, 
                         JOptionPane.QUESTION_MESSAGE);
                 if (ok == 0) {
-                    crud.eliminar(modelo.getMarcaByRow(fila));
+                    crud.eliminar(modelo.getProductoByRow(fila));
                     listar("");
                 }
             } else {
@@ -123,13 +135,13 @@ public class MarcaController implements ActionListener , KeyListener {
             }
             System.out.println("Evento click de guardar");
             if (operacion == 'N') {
-                crud.insertar(getMarcaForm());
+                crud.insertar(getProductoForm());
                 
                 gui.txt_nombre.requestFocus();
             }
             
             if (operacion == 'E') {
-                crud.actualizar(getMarcaForm());
+                crud.actualizar(getProductoForm());
                 habilitarCampos(false);
             }
             
@@ -143,6 +155,9 @@ public class MarcaController implements ActionListener , KeyListener {
     // Metodo encargado de habilitar o deshabilitar los campos
     private void habilitarCampos(Boolean estado) {
         gui.txt_nombre.setEnabled(estado);
+        gui.txt_precio.setEnabled(estado);
+        gui.cbo_Marca.setEnabled(estado);
+        gui.cbo_Iva.setEnabled(estado);
     }
     
       private void habilitarBoton(Boolean estado) {
@@ -155,16 +170,22 @@ public class MarcaController implements ActionListener , KeyListener {
     }
 
     // funcion o metodo encargado de recuperrar los valores de los JTextField en un objeto
-    private Marca getMarcaForm() {
-        marca.setNombre(gui.txt_nombre.getText());
-        return marca;
+    private Producto getProductoForm() {
+        producto.setNombre(gui.txt_nombre.getText());
+        producto.setPrecio(Integer.valueOf(gui.txt_precio.getText()));
+        producto.setIva((Iva) gui.cbo_Iva.getSelectedItem());
+        producto.setMarca((Marca) gui.cbo_Marca.getSelectedItem());
+        return producto;
     }
 
     //Funcion o metodo encargado asignar valor los JTextField
-    private void setMarcaForm(Marca item) {
+    private void setProductoForm(Producto item) {
         System.out.println(item);
-        marca.setId(item.getId());
+        producto.setId(item.getId());
         gui.txt_nombre.setText(item.getNombre());
+        gui.txt_precio.setText(item.getPrecio().toString());
+        gui.cbo_Iva.setSelectedItem(item.getIva());
+        gui.cbo_Marca.setSelectedItem(item.getMarca());
     }
     
     private boolean validarDatos(){
@@ -173,6 +194,26 @@ public class MarcaController implements ActionListener , KeyListener {
             vacio = true;
         }
         return vacio;
+    }
+    
+    private void llenarComboMarca(JComboBox cbo){
+        DefaultComboBoxModel<Marca> model = new DefaultComboBoxModel();
+        List<Marca> lista = crudMarca.listar("");
+        for (int i = 0; i < lista.size(); i++) {
+            Marca marca = lista.get(i);
+            model.addElement(marca);
+        }
+        cbo.setModel(model);
+    }
+    
+      private void llenarComboIva(JComboBox cbo){
+        DefaultComboBoxModel<Iva> model = new DefaultComboBoxModel();
+        List<Iva> lista = crudIva.listar("");
+        for (int i = 0; i < lista.size(); i++) {
+            Iva iva = lista.get(i);
+            model.addElement(iva);
+        }
+        cbo.setModel(model);
     }
 
     @Override

@@ -60,6 +60,7 @@ public class IvaController implements ActionListener , KeyListener {
     }
     
     public void mostrarVentana() {
+        gui.setLocationRelativeTo(gui);
         gui.setVisible(true);
     }
     

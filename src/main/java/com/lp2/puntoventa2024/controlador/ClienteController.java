@@ -4,10 +4,10 @@
  */
 package com.lp2.puntoventa2024.controlador;
 
-import com.lp2.puntoventa2024.modelo.Marca;
-import com.lp2.puntoventa2024.modelo.dao.MarcaCrudImpl;
-import com.lp2.puntoventa2024.modelo.tabla.MarcaTablaModel;
-import com.lp2.puntoventa2024.vista.GUIMarca;
+import com.lp2.puntoventa2024.modelo.Cliente;
+import com.lp2.puntoventa2024.modelo.dao.ClienteCrudImpl;
+import com.lp2.puntoventa2024.modelo.tabla.ClienteTablaModel;
+import com.lp2.puntoventa2024.vista.GUICliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -22,17 +22,17 @@ import javax.swing.JTable;
  *
  * @author cmendieta
  */
-public class MarcaController implements ActionListener , KeyListener {
-    
-    private GUIMarca gui;
-    private MarcaCrudImpl crud;
-    
+public class ClienteController implements ActionListener, KeyListener {
+
+    private GUICliente gui;
+    private ClienteCrudImpl crud;
+
     private char operacion;
-    Marca marca = new Marca();
-    
-    MarcaTablaModel modelo = new MarcaTablaModel();
-    
-    public MarcaController(GUIMarca gui, MarcaCrudImpl crud) {
+    Cliente cliente = new Cliente();
+
+    ClienteTablaModel modelo = new ClienteTablaModel();
+
+    public ClienteController(GUICliente gui, ClienteCrudImpl crud) {
         this.gui = gui;
         this.crud = crud;
         this.gui.btn_guardar.addActionListener(this);
@@ -41,41 +41,41 @@ public class MarcaController implements ActionListener , KeyListener {
         this.gui.btn_editar.addActionListener(this);
         this.gui.btn_eliminar.addActionListener(this);
         this.gui.txt_buscar.addKeyListener(this);
-        
+
         gui.tabla.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 JTable tabla = (JTable) e.getSource();
                 int row = tabla.rowAtPoint(e.getPoint());
-                MarcaTablaModel model = (MarcaTablaModel) tabla.getModel();
+                ClienteTablaModel model = (ClienteTablaModel) tabla.getModel();
                 //Devolver el objeto seleccionado en la fila
 
-                setMarcaForm(model.getMarcaByRow(row));
+                setClienteForm(model.getClienteByRow(row));
             }
         });
-        
+
         habilitarCampos(false);
         habilitarBoton(false);
-        
+
         listar("");
     }
-    
+
     public void mostrarVentana() {
         gui.setLocationRelativeTo(gui);
         gui.setVisible(true);
     }
-    
+
     public void listar(String valorBuscado) {
-        List<Marca> lista = crud.listar(valorBuscado);
+        List<Cliente> lista = crud.listar(valorBuscado);
         modelo.setLista(lista);
         gui.tabla.setModel(modelo);
         gui.tabla.updateUI();
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println("Evento click");
-        
-        if(e.getSource()== gui.txt_buscar){
+
+        if (e.getSource() == gui.txt_buscar) {
             String valor = gui.txt_buscar.getText();
             listar(valor);
         }
@@ -83,26 +83,26 @@ public class MarcaController implements ActionListener , KeyListener {
             operacion = 'N';
             limpiar();
             habilitarCampos(true);
-             habilitarBoton(true);
-            gui.txt_nombre.requestFocus();
+            habilitarBoton(true);
+            gui.txt_rut.requestFocus();
         }
         if (e.getSource() == gui.btn_editar) {
             operacion = 'E';
             habilitarCampos(true);
-             habilitarBoton(true);
-            gui.txt_nombre.requestFocus();
+            habilitarBoton(true);
+            gui.txt_rut.requestFocus();
         }
-        
+
         if (e.getSource() == gui.btn_eliminar) {
             int fila = gui.tabla.getSelectedRow();
             if (fila >= 0) {
                 int ok = JOptionPane.showConfirmDialog(gui,
-                        "Realmente desea elimnar el registro?", 
-                        "Confirmar operacion", 
-                        JOptionPane.YES_NO_OPTION, 
+                        "Realmente desea elimnar el registro?",
+                        "Confirmar operacion",
+                        JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
                 if (ok == 0) {
-                    crud.eliminar(modelo.getMarcaByRow(fila));
+                    crud.eliminar(modelo.getClienteByRow(fila));
                     listar("");
                 }
             } else {
@@ -111,65 +111,82 @@ public class MarcaController implements ActionListener , KeyListener {
         }
         if (e.getSource() == gui.btn_cancelar) {
             habilitarCampos(false);
-             habilitarBoton(false);
+            habilitarBoton(false);
             limpiar();
         }
-        
+
         if (e.getSource() == gui.btn_guardar) {
             boolean v_control = validarDatos();
-            if(v_control == true){
+            if (v_control == true) {
                 JOptionPane.showMessageDialog(gui, "favor completar los datos");
                 return;
             }
             System.out.println("Evento click de guardar");
             if (operacion == 'N') {
-                crud.insertar(getMarcaForm());
-                
-                gui.txt_nombre.requestFocus();
+                crud.insertar(getClienteForm());
+
+                gui.txt_rut.requestFocus();
             }
-            
+
             if (operacion == 'E') {
-                crud.actualizar(getMarcaForm());
+                crud.actualizar(getClienteForm());
                 habilitarCampos(false);
             }
-            
+
             listar("");
             limpiar();
-            
+
         }
         System.out.println(operacion);
     }
 
     // Metodo encargado de habilitar o deshabilitar los campos
     private void habilitarCampos(Boolean estado) {
-        gui.txt_nombre.setEnabled(estado);
+        gui.txt_rut.setEnabled(estado);
+        gui.txt_razon_social.setEnabled(estado);
+        gui.txt_direccion.setEnabled(estado);
+        gui.txt_telefono.setEnabled(estado);
+        gui.txt_correo.setEnabled(estado);
     }
-    
-      private void habilitarBoton(Boolean estado) {
+
+    private void habilitarBoton(Boolean estado) {
         gui.btn_guardar.setEnabled(estado);
         gui.btn_cancelar.setEnabled(estado);
     }
-    
+
     private void limpiar() {
-        gui.txt_nombre.setText("");
+        gui.txt_rut.setText("");
+        gui.txt_razon_social.setText("");
+        gui.txt_direccion.setText("");
+        gui.txt_telefono.setText("");
+        gui.txt_correo.setText("");
     }
 
     // funcion o metodo encargado de recuperrar los valores de los JTextField en un objeto
-    private Marca getMarcaForm() {
-        marca.setNombre(gui.txt_nombre.getText());
-        return marca;
+    private Cliente getClienteForm() {
+        cliente.setRut(gui.txt_rut.getText());
+        cliente.setRazonSocial(gui.txt_razon_social.getText());
+        cliente.setDireccion(gui.txt_direccion.getText());
+        cliente.setCorreo(gui.txt_correo.getText());
+        cliente.setTelefono(gui.txt_telefono.getText());
+        return cliente;
     }
 
     //Funcion o metodo encargado asignar valor los JTextField
-    private void setMarcaForm(Marca item) {
+    private void setClienteForm(Cliente item) {
         System.out.println(item);
-        marca.setId(item.getId());
-        gui.txt_nombre.setText(item.getNombre());
+        cliente.setId(item.getId());
+        gui.txt_rut.setText(item.getRut());
+        gui.txt_razon_social.setText(item.getRazonSocial());
+        gui.txt_direccion.setText(item.getDireccion());
+        gui.txt_telefono.setText(item.getTelefono());
+        gui.txt_correo.setText(item.getCorreo());
+
     }
-    
-    private boolean validarDatos(){
+
+    private boolean validarDatos() {
         boolean vacio = false;
-        if(gui.txt_nombre.getText().isEmpty()){
+        if (gui.txt_rut.getText().isEmpty()) {
             vacio = true;
         }
         return vacio;
@@ -177,7 +194,7 @@ public class MarcaController implements ActionListener , KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-      
+
     }
 
     @Override
@@ -187,6 +204,6 @@ public class MarcaController implements ActionListener , KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        
+
     }
 }

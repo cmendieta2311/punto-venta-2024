@@ -8,14 +8,11 @@ package com.lp2.puntoventa2024.modelo;
  *
  * @author cmendieta
  */
-public class Marca {
+public class Iva {
+    
     private Integer id;
     private String nombre;
-
-    public Marca() {
-    }
-    
-    
+    private Integer valor;
 
     public Integer getId() {
         return id;
@@ -33,21 +30,24 @@ public class Marca {
         this.nombre = nombre;
     }
 
-    @Override
-    public String toString() {
-        return id + " - "+nombre;
+    public Integer getValor() {
+        return valor;
+    }
+
+    public void setValor(Integer valor) {
+        this.valor = valor;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public String toString() {
+        return nombre;
+    }
+    
+       public boolean equals(Object obj) {
         Integer cod1 = getId();
-        Integer cod2 = ((Marca)obj).getId();
+        Integer cod2 = ((Iva)obj).getId();
         if(cod1.equals(cod2)) return true;
         return false;
     }
-    
-    
-    
-    
     
 }
